@@ -1,0 +1,22 @@
+@use 'media' as *;
+@use 'mixins' as *;
+.container {
+    max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+    margin-inline: auto;
+    padding-inline: var(--container-padding-x);
+}
+
+.visually-hidden {
+    @include visually-hidden;
+}
+
+.hidden-mobile { //то что будет скрыто, для мобильных устройств, для устройств ширина экрана которых больше 767px
+    @include mobile { //меньше 767px
+        display: none !important;
+    }
+}
+.visible-mobile { //то что будет видно, для мобильных устройств, для устройств ширина экрана которых меньше 767px
+    @include mobile-above { //больше 768px
+        display: none !important;
+    }
+}
