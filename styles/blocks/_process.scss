@@ -1,0 +1,133 @@
+@use "../media" as *;
+@use '../mixins' as *;
+.process {
+    &__list {
+        display: flex;
+        flex-direction: column;
+        row-gap: 30px;
+        counter-reset: custom-counter;
+        list-style: none;
+        //позволяет создавать автоматическую нумерацию элементов (например, заголовков или пунктов списка) без использования тега <ol>
+        //В данном случаи мы создали переменную-счетчик - custom-counter у родительского элемента process__list
+        //Если не прописывать число после имени переменной-счетчика, то счетчик сбросится в 0
+    
+        @include mobile {
+            row-gap: 20px;
+        }
+    }
+
+    &__item {
+        --counterContent: counter(custom-counter);
+
+        counter-increment: custom-counter; //увеличиваем счетчик на один на каждом process-item, то есть для первого process-item, custom-counter будет равен 1, а далее 2 и т.д
+
+        &:nth-child(-n + 9) { //Для первых девяти process__item переменная --counterContent будет равна '0' counter(custom-counter)
+            //ТО есть 0 и текущее значение переменной счетчика custom-counter
+            //То есть для первых девяти мы указываем ноль, а для остальных нет
+            --counterContent: '0' counter(custom-counter);
+        }
+    }
+
+    &__accordion {
+        --indicatorVerticalRotate: 90deg;
+
+        padding: 40px 60px;
+        background-color: var(--color-gray);
+        border: var(--border);
+        border-radius: var(--border-radius-large);
+        box-shadow: var(--shadow);
+
+        @include hover {
+            background-color: var(--color-accent);
+        }
+
+        @include mobile {
+            padding: 30px;
+        }
+
+        &[open] {
+            --indicatorVerticalRotate: 0deg;
+            background-color: var(--color-accent);
+        }
+
+        &-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            column-gap: 50px;
+            cursor: pointer;
+            user-select: none;
+            //Когда ты применяешь user-select: none, текст внутри этого элемента становится невозможным выделить мышкой или долгим нажатием.
+            
+            @include mobile {
+                column-gap: 28px;
+            }
+        }
+        &-title {
+            @include fluid-text(30, 18);
+            display: flex;
+            align-items: center;
+            column-gap: 25px;
+
+            @include mobile {
+                column-gap: 33px;
+            }
+
+            &::before {
+                content: var(--counterContent);
+                //Выводим значение нашей переменной-счетчика на экран. В данном случаи через псевдоэлемент ::before, и его свойство content.
+                //Благодаря функции counter. в аргументы указываем имя нашей переменной-счетчика
+                //Получается, что у каждого process__accordion-title будет псевдоэлемент ::before который будет равен (content: counter()) текущему значению переменной-счетчика (custom-counter)
+            
+                font-size: 2em;
+
+                @include mobile {
+                    font-size: 30px;
+                }
+            }
+        }
+
+        &-indicator {
+            @include flex-center;
+            @include square(58px);
+            
+            flex-shrink: 0;
+
+            position: relative;
+            background-color: var(--color-gray);
+            border: var(--border);
+            border-radius: 50%;
+            transition-duration: var(--transition-duration);
+
+            @include mobile {
+                width: 30px;
+            }
+
+            &::before,
+            &::after {
+                @include abs-center;
+
+                content: '';
+                width: 45%;
+                height: 10%;
+                background-color: var(--color-dark);
+            }
+
+            &::after {
+                transition-duration: var(--transition-duration);
+                rotate: var(--indicatorVerticalRotate);
+            }
+        }
+
+        &-body {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: var(--border);
+
+            @include mobile {
+                margin-top: 20px;
+                padding-top: 20px;
+            }
+        }
+    }
+}
