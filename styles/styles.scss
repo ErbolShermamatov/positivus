@@ -6,6 +6,10 @@
 @use 'utils';
 @use 'globals';
 
+
+@use 'blocks/field';
+@use 'blocks/radios';
+@use 'blocks/radio';
 @use 'blocks/button';
 @use 'blocks/grid';
 @use 'blocks/burger-button';
@@ -32,3 +36,5 @@
 @use 'blocks/pagination';
 @use 'blocks/reviews';
 @use 'blocks/review-card';
+
+@use 'blocks/contact-us';
